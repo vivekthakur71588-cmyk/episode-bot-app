@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Episodes List</title>
+    <!-- Telegram Web App JS SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #e0e0e0;
+        }
+        .episode-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .episode-card:active {
+            background-color: #2a2a2a;
+        }
+        .left-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .ep-number {
+            background: linear-gradient(135deg, #b71c1c, #d32f2f);
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        .ep-details h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        .ep-details p {
+            margin: 0;
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+        .arrow {
+            color: #a0a0a0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>India's Got Latent</h2>
+
+    <!-- Episode List -->
+    <div class="episode-card" onclick="openEpisode(1)">
+        <div class="left-box">
+            <div class="ep-number">1</div>
+            <div class="ep-details">
+                <h4>Episode 1</h4>
+                <p>1080p • 720p • 480p</p>
+            </div>
+        </div>
+        <div class="arrow">›</div>
+    </div>
+
+    <div class="episode-card" onclick="openEpisode(2)">
+        <div class="left-box">
+            <div class="ep-number">2</div>
+            <div class="ep-details">
+                <h4>Episode 2</h4>
+                <p>480p • 1080p • 720p</p>
+            </div>
+        </div>
+        <div class="arrow">›</div>
+    </div>
+
+    <div class="episode-card" onclick="openEpisode(3)">
+        <div class="left-box">
+            <div class="ep-number">3</div>
+            <div class="ep-details">
+                <h4>Episode 3</h4>
+                <p>480p • 720p • 1080p</p>
+            </div>
+        </div>
+        <div class="arrow">›</div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Mini App ko full screen kholne ke liye
+
+        function openEpisode(epNum) {
+            // Yahan click hone par quality page par redirect hoga
+            alert("Opening Episode " + epNum);
+        }
+    </script>
+</body>
+</html>
