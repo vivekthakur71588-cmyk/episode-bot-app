@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Episodes List</title>
-    <!-- Telegram Web App JS SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -20,7 +19,7 @@
             font-size: 18px;
             color: #e0e0e0;
         }
-        .episode-card {
+        .episode-card, .quality-card {
             background-color: #1e1e1e;
             border-radius: 12px;
             padding: 15px;
@@ -32,7 +31,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .episode-card:active {
+        .episode-card:active, .quality-card:active {
             background-color: #2a2a2a;
         }
         .left-box {
@@ -65,53 +64,120 @@
             color: #a0a0a0;
             font-size: 18px;
         }
+        .hidden {
+            display: none;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <h2>India's Got Latent</h2>
+    <div id="main-view">
+        <h2>India's Got Latent</h2>
 
-    <!-- Episode List -->
-    <div class="episode-card" onclick="openEpisode(1)">
-        <div class="left-box">
-            <div class="ep-number">1</div>
-            <div class="ep-details">
-                <h4>Episode 1</h4>
-                <p>1080p • 720p • 480p</p>
+        <div class="episode-card" onclick="showQualities(1)">
+            <div class="left-box">
+                <div class="ep-number">1</div>
+                <div class="ep-details">
+                    <h4>Episode 1</h4>
+                    <p>1080p • 720p • 480p</p>
+                </div>
             </div>
+            <div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
+
+        <div class="episode-card" onclick="showQualities(2)">
+            <div class="left-box">
+                <div class="ep-number">2</div>
+                <div class="ep-details">
+                    <h4>Episode 2</h4>
+                    <p>480p • 1080p • 720p</p>
+                </div>
+            </div>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="episode-card" onclick="showQualities(3)">
+            <div class="left-box">
+                <div class="ep-number">3</div>
+                <div class="ep-details">
+                    <h4>Episode 3</h4>
+                    <p>480p • 720p • 1080p</p>
+                </div>
+            </div>
+            <div class="arrow">›</div>
+        </div>
     </div>
 
-    <div class="episode-card" onclick="openEpisode(2)">
-        <div class="left-box">
-            <div class="ep-number">2</div>
-            <div class="ep-details">
-                <h4>Episode 2</h4>
-                <p>480p • 1080p • 720p</p>
-            </div>
-        </div>
-        <div class="arrow">›</div>
-    </div>
+    <!-- Quality Selection View (Pehle chhupa rahega) -->
+    <div id="quality-view" class="hidden">
+        <button class="back-btn" onclick="goBack()">‹ Back to Episodes</button>
+        <h2 id="selected-ep-title">Select Quality</h2>
 
-    <div class="episode-card" onclick="openEpisode(3)">
-        <div class="left-box">
-            <div class="ep-number">3</div>
-            <div class="ep-details">
-                <h4>Episode 3</h4>
-                <p>480p • 720p • 1080p</p>
+        <div class="quality-card" onclick="selectQuality('1080p')">
+            <div class="left-box">
+                <div class="ep-number" style="background: linear-gradient(135deg, #2e7d32, #43a047);">HD</div>
+                <div class="ep-details">
+                    <h4>1080p Full HD</h4>
+                    <p>High Quality Video</p>
+                </div>
             </div>
+            <div class="arrow">›</div>
         </div>
-        <div class="arrow">›</div>
+
+        <div class="quality-card" onclick="selectQuality('720p')">
+            <div class="left-box">
+                <div class="ep-number" style="background: linear-gradient(135deg, #1565c0, #1e88e5);">HQ</div>
+                <div class="ep-details">
+                    <h4>720p HD</h4>
+                    <p>Standard Quality</p>
+                </div>
+            </div>
+            <div class="arrow">›</div>
+        </div>
+
+        <div class="quality-card" onclick="selectQuality('480p')">
+            <div class="left-box">
+                <div class="ep-number" style="background: linear-gradient(135deg, #ef6c00, #fb8c00);">SD</div>
+                <div class="ep-details">
+                    <h4>480p SD</h4>
+                    <p>Low Data Usage</p>
+                </div>
+            </div>
+            <div class="arrow">›</div>
+        </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Mini App ko full screen kholne ke liye
+        tg.expand();
 
-        function openEpisode(epNum) {
-            // Yahan click hone par quality page par redirect hoga
-            alert("Opening Episode " + epNum);
+        let currentEpisode = 1;
+
+        function showQualities(epNum) {
+            currentEpisode = epNum;
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('quality-view').classList.remove('hidden');
+            document.getElementById('selected-ep-title').innerText = "Episode " + epNum + " - Select Quality";
+        }
+
+        function goBack() {
+            document.getElementById('quality-view').classList.add('hidden');
+            document.getElementById('main-view').classList.remove('hidden');
+        }
+
+        function selectQuality(quality) {
+            // Yeh data bot ko wapas bhejega taaki bot file send kar sake
+            let data = JSON.stringify({ episode: currentEpisode, quality: quality });
+            tg.sendData(data); 
         }
     </script>
 </body>
