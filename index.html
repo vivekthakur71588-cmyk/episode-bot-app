@@ -28,6 +28,7 @@
             justify-content: space-between;
             align-items: center;
             border: 1px solid #333;
+            cursor: pointer;
         }
         .ep-details h4 {
             margin: 0 0 5px 0;
@@ -38,79 +39,104 @@
             font-size: 12px;
             color: #888;
         }
-        .btn-group {
+        .quality-box {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
             display: flex;
-            gap: 5px;
-        }
-        .quality-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-            font-size: 12px;
+            align-items: center;
+            border: 1px solid #333;
             cursor: pointer;
-            font-weight: bold;
         }
-        .quality-btn:active {
-            background: #ff6b81;
+        .quality-box:active {
+            background: #2a2a2a;
         }
     </style>
 </head>
 <body>
 
-    <h2>🎬 India's Got Latent</h2>
+    <div id="main-page">
+        <h2>🎬 India's Got Latent</h2>
 
-    <!-- Episode 1 -->
-    <div class="episode-card">
-        <div class="ep-details">
-            <h4>Episode 1</h4>
-            <p>1080p • 720p • 480p</p>
+        <!-- Episode 1 -->
+        <div class="episode-card" onclick="showQualityPage(1)">
+            <div class="ep-details">
+                <h4>Episode 1</h4>
+                <p>Select Quality ➔</p>
+            </div>
         </div>
-        <div class="btn-group">
-            <button class="quality-btn" onclick="selectQuality(1, '1080p')">1080p</button>
-            <button class="quality-btn" onclick="selectQuality(1, '720p')">720p</button>
-            <button class="quality-btn" onclick="selectQuality(1, '480p')">480p</button>
+
+        <!-- Episode 2 -->
+        <div class="episode-card" onclick="showQualityPage(2)">
+            <div class="ep-details">
+                <h4>Episode 2</h4>
+                <p>Select Quality ➔</p>
+            </div>
+        </div>
+
+        <!-- Episode 3 (Coming Soon) -->
+        <div class="episode-card" style="opacity: 0.5; cursor: not-allowed;">
+            <div class="ep-details">
+                <h4>Episode 3 <span style="font-size: 10px; background: #d32f2f; color: white; padding: 2px 5px; border-radius: 3px;">SOON</span></h4>
+                <p>Releasing soon... 🔒</p>
+            </div>
         </div>
     </div>
 
-    <!-- Episode 2 -->
-    <div class="episode-card">
-        <div class="ep-details">
-            <h4>Episode 2</h4>
-            <p>1080p • 720p • 480p</p>
+    <div id="quality-page" style="display: none;">
+        <h3 id="ep-title" style="text-align: center; color: #ff4757;">Select Quality</h3>
+        <p onclick="showMainPage()" style="color: #ff4757; cursor: pointer; margin-bottom: 20px;">⬅️ Back to Episodes</p>
+        
+        <div class="quality-box" onclick="sendDataToBot('1080p Full HD')">
+            <div style="background: #2ed573; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">HD</div>
+            <div>
+                <h4 style="margin:0;">1080p Full HD</h4>
+                <p style="margin:0; font-size:12px; color:#888;">High Quality Video</p>
+            </div>
         </div>
-        <div class="btn-group">
-            <button class="quality-btn" onclick="selectQuality(2, '1080p')">1080p</button>
-            <button class="quality-btn" onclick="selectQuality(2, '720p')">720p</button>
-            <button class="quality-btn" onclick="selectQuality(2, '480p')">480p</button>
-        </div>
-    </div>
 
-    <!-- Episode 3 (Coming Soon) -->
-    <div class="episode-card" style="opacity: 0.5;">
-        <div class="ep-details">
-            <h4>Episode 3 <span style="font-size: 10px; background: #d32f2f; color: white; padding: 2px 5px; border-radius: 3px;">SOON</span></h4>
-            <p>Releasing soon...</p>
+        <div class="quality-box" onclick="sendDataToBot('720p HD')">
+            <div style="background: #1e90ff; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">HQ</div>
+            <div>
+                <h4 style="margin:0;">720p HD</h4>
+                <p style="margin:0; font-size:12px; color:#888;">Standard Quality</p>
+            </div>
         </div>
-        <div class="btn-group">
-            <span style="font-size: 14px; color: #888;">🔒 Locked</span>
+
+        <div class="quality-box" onclick="sendDataToBot('480p SD')">
+            <div style="background: #ffa502; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">SD</div>
+            <div>
+                <h4 style="margin:0;">480p SD</h4>
+                <p style="margin:0; font-size:12px; color:#888;">Low Data Usage</p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Telegram WebApp Initialize
         window.Telegram.WebApp.ready();
+        let selectedEpisode = 1;
 
-        function selectQuality(episodeNum, qualityStr) {
-            // Data jo bot ke pas jayega
+        function showQualityPage(epNum) {
+            selectedEpisode = epNum;
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('quality-page').style.display = 'block';
+            document.getElementById('ep-title').innerText = `Episode ${epNum} - Select Quality`;
+        }
+
+        function showMainPage() {
+            document.getElementById('quality-page').style.display = 'none';
+            document.getElementById('main-page').style.display = 'block';
+        }
+
+        function sendDataToBot(qualityStr) {
             const payload = JSON.stringify({
-                episode: episodeNum,
+                episode: selectedEpisode,
                 quality: qualityStr
             });
 
             if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.sendData(payload); // Bot ko data bhejna
+                window.Telegram.WebApp.sendData(payload); // Bot ko data bhejega aur app band hogi
             } else {
                 alert("Please open inside Telegram!");
             }
@@ -118,4 +144,5 @@
     </script>
 
 </body>
-</html>
+    </html>
+    
