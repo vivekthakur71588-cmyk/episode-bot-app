@@ -6,6 +6,10 @@
     <title>India's Got Latent - Episodes</title>
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- YAHAN APNA MONETAG HEADER TAG PASTE KAREIN (Jo dashboard par "Copy this tag" mein mila hai) -->
+    <!-- Example: <script src="//libtl.com/p.js" data-sdk="show_11645093"></script> -->
+
     <style>
         body {
             background-color: #0f0f0f;
@@ -30,15 +34,6 @@
             border: 1px solid #333;
             cursor: pointer;
         }
-        .ep-details h4 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
-        }
-        .ep-details p {
-            margin: 0;
-            font-size: 12px;
-            color: #888;
-        }
         .quality-box {
             background: #1a1a1a;
             border-radius: 10px;
@@ -62,24 +57,16 @@
         <!-- Episode 1 -->
         <div class="episode-card" onclick="showQualityPage(1)">
             <div class="ep-details">
-                <h4>Episode 1</h4>
-                <p>Select Quality ➔</p>
+                <h4 style="margin:0;">Episode 1</h4>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Watch Ad & Select Quality ➔</p>
             </div>
         </div>
 
         <!-- Episode 2 -->
         <div class="episode-card" onclick="showQualityPage(2)">
             <div class="ep-details">
-                <h4>Episode 2</h4>
-                <p>Select Quality ➔</p>
-            </div>
-        </div>
-
-        <!-- Episode 3 (Coming Soon) -->
-        <div class="episode-card" style="opacity: 0.5; cursor: not-allowed;">
-            <div class="ep-details">
-                <h4>Episode 3 <span style="font-size: 10px; background: #d32f2f; color: white; padding: 2px 5px; border-radius: 3px;">SOON</span></h4>
-                <p>Releasing soon... 🔒</p>
+                <h4 style="margin:0;">Episode 2</h4>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Watch Ad & Select Quality ➔</p>
             </div>
         </div>
     </div>
@@ -88,27 +75,27 @@
         <h3 id="ep-title" style="text-align: center; color: #ff4757;">Select Quality</h3>
         <p onclick="showMainPage()" style="color: #ff4757; cursor: pointer; margin-bottom: 20px;">⬅️ Back to Episodes</p>
         
-        <div class="quality-box" onclick="sendDataToBot('1080p Full HD')">
+        <div class="quality-box" onclick="watchAdAndGetVideo('1080p Full HD')">
             <div style="background: #2ed573; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">HD</div>
             <div>
                 <h4 style="margin:0;">1080p Full HD</h4>
-                <p style="margin:0; font-size:12px; color:#888;">High Quality Video</p>
+                <p style="margin:0; font-size:12px; color:#888;">Watch Ad to Unlock</p>
             </div>
         </div>
 
-        <div class="quality-box" onclick="sendDataToBot('720p HD')">
+        <div class="quality-box" onclick="watchAdAndGetVideo('720p HD')">
             <div style="background: #1e90ff; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">HQ</div>
             <div>
                 <h4 style="margin:0;">720p HD</h4>
-                <p style="margin:0; font-size:12px; color:#888;">Standard Quality</p>
+                <p style="margin:0; font-size:12px; color:#888;">Watch Ad to Unlock</p>
             </div>
         </div>
 
-        <div class="quality-box" onclick="sendDataToBot('480p SD')">
+        <div class="quality-box" onclick="watchAdAndGetVideo('480p SD')">
             <div style="background: #ffa502; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">SD</div>
             <div>
                 <h4 style="margin:0;">480p SD</h4>
-                <p style="margin:0; font-size:12px; color:#888;">Low Data Usage</p>
+                <p style="margin:0; font-size:12px; color:#888;">Watch Ad to Unlock</p>
             </div>
         </div>
     </div>
@@ -129,6 +116,23 @@
             document.getElementById('main-page').style.display = 'block';
         }
 
+        function watchAdAndGetVideo(qualityStr) {
+            // Monetag Rewarded Ad function call hoga
+            if (typeof show_11645093 === 'function') {
+                show_11645093().then(() => {
+                    // Ad complete hone ke baad yeh chalega aur bot ko video bhejne ka data dega
+                    sendDataToBot(qualityStr);
+                }).catch((e) => {
+                    console.log("Ad error or skipped", e);
+                    // Agar ad load na ho ya error aaye toh bhi user ko video mil sake isliye fallback laga sakte hain ya direct send kar sakte hain
+                    sendDataToBot(qualityStr);
+                });
+            } else {
+                // Agar script load hone mein time lage ya test mode ho
+                sendDataToBot(qualityStr);
+            }
+        }
+
         function sendDataToBot(qualityStr) {
             const payload = JSON.stringify({
                 episode: selectedEpisode,
@@ -136,7 +140,7 @@
             });
 
             if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.sendData(payload); // Bot ko data bhejega aur app band hogi
+                window.Telegram.WebApp.sendData(payload);
             } else {
                 alert("Please open inside Telegram!");
             }
@@ -144,5 +148,4 @@
     </script>
 
 </body>
-    </html>
-    
+</html>
