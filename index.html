@@ -7,8 +7,8 @@
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- YAHAN APNA MONETAG HEADER TAG PASTE KAREIN (Jo dashboard par "Copy this tag" mein mila hai) -->
-    <!-- Example: <script src="//libtl.com/p.js" data-sdk="show_11645093"></script> -->
+    <!-- Monetag Header Tag -->
+    <script src="//libtl.com/p.js" data-sdk="show_11645093"></script>
 
     <style>
         body {
@@ -58,7 +58,7 @@
         <div class="episode-card" onclick="showQualityPage(1)">
             <div class="ep-details">
                 <h4 style="margin:0;">Episode 1</h4>
-                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Watch Ad & Select Quality ➔</p>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Select Quality ➔</p>
             </div>
         </div>
 
@@ -66,7 +66,7 @@
         <div class="episode-card" onclick="showQualityPage(2)">
             <div class="ep-details">
                 <h4 style="margin:0;">Episode 2</h4>
-                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Watch Ad & Select Quality ➔</p>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Select Quality ➔</p>
             </div>
         </div>
     </div>
@@ -117,18 +117,17 @@
         }
 
         function watchAdAndGetVideo(qualityStr) {
-            // Monetag Rewarded Ad function call hoga
+            // Monetag Rewarded Ad show karega
             if (typeof show_11645093 === 'function') {
                 show_11645093().then(() => {
-                    // Ad complete hone ke baad yeh chalega aur bot ko video bhejne ka data dega
+                    // Ad complete hone ke baad bot ko data jayega aur video aayegi
                     sendDataToBot(qualityStr);
                 }).catch((e) => {
-                    console.log("Ad error or skipped", e);
-                    // Agar ad load na ho ya error aaye toh bhi user ko video mil sake isliye fallback laga sakte hain ya direct send kar sakte hain
+                    console.log("Ad skipped or error", e);
                     sendDataToBot(qualityStr);
                 });
             } else {
-                // Agar script load hone mein time lage ya test mode ho
+                // Agar ad script load na ho toh direct bhej dega
                 sendDataToBot(qualityStr);
             }
         }
@@ -148,4 +147,5 @@
     </script>
 
 </body>
-</html>
+                </html>
+    
