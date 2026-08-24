@@ -3,53 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Episodes List</title>
+    <title>India's Got Latent - Episodes</title>
+    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            background-color: #121212;
+            background-color: #0f0f0f;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 15px;
         }
         h2 {
             text-align: center;
+            color: #ff4757;
             margin-bottom: 20px;
-            font-size: 18px;
-            color: #e0e0e0;
         }
-        .episode-card, .quality-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
+        .episode-card {
+            background: #1a1a1a;
+            border-radius: 10px;
             padding: 15px;
             margin-bottom: 12px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .episode-card:active, .quality-card:active {
-            background-color: #2a2a2a;
-        }
-        .left-box {
-            display: flex;
             align-items: center;
-            gap: 15px;
-        }
-        .ep-number {
-            background: linear-gradient(135deg, #b71c1c, #d32f2f);
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
+            border: 1px solid #333;
         }
         .ep-details h4 {
             margin: 0 0 5px 0;
@@ -58,127 +36,86 @@
         .ep-details p {
             margin: 0;
             font-size: 12px;
-            color: #a0a0a0;
+            color: #888;
         }
-        .arrow {
-            color: #a0a0a0;
-            font-size: 18px;
+        .btn-group {
+            display: flex;
+            gap: 5px;
         }
-        .hidden {
-            display: none;
-        }
-        .back-btn {
-            background: none;
+        .quality-btn {
+            background: #ff4757;
+            color: white;
             border: none;
-            color: #d32f2f;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 12px;
             cursor: pointer;
-            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .quality-btn:active {
+            background: #ff6b81;
         }
     </style>
 </head>
 <body>
 
-    <div id="main-view">
-        <h2>India's Got Latent</h2>
+    <h2>🎬 India's Got Latent</h2>
 
-        <div class="episode-card" onclick="showQualities(1)">
-            <div class="left-box">
-                <div class="ep-number">1</div>
-                <div class="ep-details">
-                    <h4>Episode 1</h4>
-                    <p>1080p • 720p • 480p</p>
-                </div>
-            </div>
-            <div class="arrow">›</div>
+    <!-- Episode 1 -->
+    <div class="episode-card">
+        <div class="ep-details">
+            <h4>Episode 1</h4>
+            <p>1080p • 720p • 480p</p>
         </div>
-
-        <div class="episode-card" onclick="showQualities(2)">
-            <div class="left-box">
-                <div class="ep-number">2</div>
-                <div class="ep-details">
-                    <h4>Episode 2</h4>
-                    <p>480p • 1080p • 720p</p>
-                </div>
-            </div>
-            <div class="arrow">›</div>
-        </div>
-
-        <div class="episode-card" onclick="showQualities(3)">
-            <div class="left-box">
-                <div class="ep-number">3</div>
-                <div class="ep-details">
-                    <h4>Episode 3</h4>
-                    <p>480p • 720p • 1080p</p>
-                </div>
-            </div>
-            <div class="arrow">›</div>
+        <div class="btn-group">
+            <button class="quality-btn" onclick="selectQuality(1, '1080p')">1080p</button>
+            <button class="quality-btn" onclick="selectQuality(1, '720p')">720p</button>
+            <button class="quality-btn" onclick="selectQuality(1, '480p')">480p</button>
         </div>
     </div>
 
-    <!-- Quality Selection View (Pehle chhupa rahega) -->
-    <div id="quality-view" class="hidden">
-        <button class="back-btn" onclick="goBack()">‹ Back to Episodes</button>
-        <h2 id="selected-ep-title">Select Quality</h2>
-
-        <div class="quality-card" onclick="selectQuality('1080p')">
-            <div class="left-box">
-                <div class="ep-number" style="background: linear-gradient(135deg, #2e7d32, #43a047);">HD</div>
-                <div class="ep-details">
-                    <h4>1080p Full HD</h4>
-                    <p>High Quality Video</p>
-                </div>
-            </div>
-            <div class="arrow">›</div>
+    <!-- Episode 2 -->
+    <div class="episode-card">
+        <div class="ep-details">
+            <h4>Episode 2</h4>
+            <p>1080p • 720p • 480p</p>
         </div>
-
-        <div class="quality-card" onclick="selectQuality('720p')">
-            <div class="left-box">
-                <div class="ep-number" style="background: linear-gradient(135deg, #1565c0, #1e88e5);">HQ</div>
-                <div class="ep-details">
-                    <h4>720p HD</h4>
-                    <p>Standard Quality</p>
-                </div>
-            </div>
-            <div class="arrow">›</div>
+        <div class="btn-group">
+            <button class="quality-btn" onclick="selectQuality(2, '1080p')">1080p</button>
+            <button class="quality-btn" onclick="selectQuality(2, '720p')">720p</button>
+            <button class="quality-btn" onclick="selectQuality(2, '480p')">480p</button>
         </div>
+    </div>
 
-        <div class="quality-card" onclick="selectQuality('480p')">
-            <div class="left-box">
-                <div class="ep-number" style="background: linear-gradient(135deg, #ef6c00, #fb8c00);">SD</div>
-                <div class="ep-details">
-                    <h4>480p SD</h4>
-                    <p>Low Data Usage</p>
-                </div>
-            </div>
-            <div class="arrow">›</div>
+    <!-- Episode 3 (Coming Soon) -->
+    <div class="episode-card" style="opacity: 0.5;">
+        <div class="ep-details">
+            <h4>Episode 3 <span style="font-size: 10px; background: #d32f2f; color: white; padding: 2px 5px; border-radius: 3px;">SOON</span></h4>
+            <p>Releasing soon...</p>
+        </div>
+        <div class="btn-group">
+            <span style="font-size: 14px; color: #888;">🔒 Locked</span>
         </div>
     </div>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+        // Telegram WebApp Initialize
+        window.Telegram.WebApp.ready();
 
-        let currentEpisode = 1;
+        function selectQuality(episodeNum, qualityStr) {
+            // Data jo bot ke pas jayega
+            const payload = JSON.stringify({
+                episode: episodeNum,
+                quality: qualityStr
+            });
 
-        function showQualities(epNum) {
-            currentEpisode = epNum;
-            document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('quality-view').classList.remove('hidden');
-            document.getElementById('selected-ep-title').innerText = "Episode " + epNum + " - Select Quality";
-        }
-
-        function goBack() {
-            document.getElementById('quality-view').classList.add('hidden');
-            document.getElementById('main-view').classList.remove('hidden');
-        }
-
-        function selectQuality(quality) {
-            // Yeh data bot ko wapas bhejega taaki bot file send kar sake
-            let data = JSON.stringify({ episode: currentEpisode, quality: quality });
-            tg.sendData(data); 
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.sendData(payload); // Bot ko data bhejna
+            } else {
+                alert("Please open inside Telegram!");
+            }
         }
     </script>
+
 </body>
 </html>
