@@ -2,129 +2,458 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>India's Got Latent - Episodes</title>
-    <!-- Telegram Web App SDK -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Episode Stream Bot</title>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 15px;
+            background: #0f0f0f;
+            color: white;
+            font-family: Arial, sans-serif;
         }
-        h2 {
+
+        h2, h3 {
             text-align: center;
+        }
+
+        h2 {
+            color: #ff4757;
+        }
+
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .card:active {
+            background: #292929;
+        }
+
+        .quality {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quality-icon {
+            width: 74px;
+            height: 65px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .hd {
+            background: #2ed573;
+        }
+
+        .hq {
+            background: #1e90ff;
+        }
+
+        .sd {
+            background: #ffa502;
+        }
+
+        .back {
             color: #ff4757;
             margin-bottom: 20px;
-        }
-        .episode-card {
-            background: #1a1a1a;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #333;
             cursor: pointer;
         }
-        .quality-box {
-            background: #1a1a1a;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            border: 1px solid #333;
-            cursor: pointer;
+
+        .ad-button {
+            width: 100%;
+            border: 0;
+            border-radius: 12px;
+            padding: 18px;
+            background: #ff4757;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
         }
-        .quality-box:active {
-            background: #2a2a2a;
+
+        .success {
+            text-align: center;
+            padding-top: 90px;
+        }
+
+        .check {
+            width: 130px;
+            height: 130px;
+            margin: auto;
+            border-radius: 50%;
+            background: #20c65a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 70px;
+        }
+
+        .collect {
+            width: 100%;
+            padding: 18px;
+            border: 0;
+            border-radius: 12px;
+            background: #ff0000;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+        .loading {
+            text-align: center;
+            padding-top: 150px;
         }
     </style>
 </head>
+
 <body>
 
-    <div id="main-page">
+<div id="app"></div>
+
+<script>
+
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+tg.expand();
+
+let selectedEpisode = null;
+let selectedQuality = null;
+
+
+// ============================
+// MAIN PAGE
+// ============================
+
+function showEpisodes() {
+
+    document.getElementById("app").innerHTML = `
+
         <h2>🎬 India's Got Latent</h2>
 
-        <!-- Episode 1 -->
-        <div class="episode-card" onclick="showQualityPage(1)">
-            <div class="ep-details">
-                <h4 style="margin:0;">Episode 1</h4>
-                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Select Quality ➔</p>
-            </div>
+        <div class="card" onclick="selectEpisode(1)">
+            <h3>Episode 1</h3>
+            <p style="color:#888;">
+                Select Quality ➜
+            </p>
         </div>
 
-        <!-- Episode 2 -->
-        <div class="episode-card" onclick="showQualityPage(2)">
-            <div class="ep-details">
-                <h4 style="margin:0;">Episode 2</h4>
-                <p style="margin:5px 0 0 0; font-size:12px; color:#888;">Select Quality ➔</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="quality-page" style="display: none;">
-        <h3 id="ep-title" style="text-align: center; color: #ff4757;">Select Quality</h3>
-        <p onclick="showMainPage()" style="color: #ff4757; cursor: pointer; margin-bottom: 20px;">⬅️ Back to Episodes</p>
-        
-        <div class="quality-box" onclick="sendDataToBot('1080p Full HD')">
-            <div style="background: #2ed573; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">HD</div>
-            <div>
-                <h4 style="margin:0;">1080p Full HD</h4>
-                <p style="margin:0; font-size:12px; color:#888;">Direct Video Test</p>
-            </div>
+        <div class="card" onclick="selectEpisode(2)">
+            <h3>Episode 2</h3>
+            <p style="color:#888;">
+                Select Quality ➜
+            </p>
         </div>
 
-        <div class="quality-box" onclick="sendDataToBot('720p HD')">
-            <div style="background: #1e90ff; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">HQ</div>
-            <div>
-                <h4 style="margin:0;">720p HD</h4>
-                <p style="margin:0; font-size:12px; color:#888;">Direct Video Test</p>
+    `;
+}
+
+
+// ============================
+// EPISODE SELECT
+// ============================
+
+function selectEpisode(ep) {
+
+    selectedEpisode = ep;
+
+    document.getElementById("app").innerHTML = `
+
+        <h2>Episode ${ep}</h2>
+
+        <p class="back" onclick="showEpisodes()">
+            ⬅️ Back to Episodes
+        </p>
+
+        <div class="card"
+             onclick="selectQuality('1080p')">
+
+            <div class="quality">
+
+                <div class="quality-icon hd">
+                    HD
+                </div>
+
+                <div>
+                    <h3 style="text-align:left;">
+                        1080p Full HD
+                    </h3>
+
+                    <p style="color:#888;">
+                        Watch Ad to Unlock
+                    </p>
+                </div>
+
             </div>
+
         </div>
 
-        <div class="quality-box" onclick="sendDataToBot('480p SD')">
-            <div style="background: #ffa502; padding: 10px; border-radius: 8px; margin-right: 15px; font-weight: bold;">SD</div>
-            <div>
-                <h4 style="margin:0;">480p SD</h4>
-                <p style="margin:0; font-size:12px; color:#888;">Direct Video Test</p>
+
+        <div class="card"
+             onclick="selectQuality('720p')">
+
+            <div class="quality">
+
+                <div class="quality-icon hq">
+                    HQ
+                </div>
+
+                <div>
+                    <h3 style="text-align:left;">
+                        720p HD
+                    </h3>
+
+                    <p style="color:#888;">
+                        Watch Ad to Unlock
+                    </p>
+                </div>
+
             </div>
+
         </div>
-    </div>
 
-    <script>
-        window.Telegram.WebApp.ready();
-        let selectedEpisode = 1;
 
-        function showQualityPage(epNum) {
-            selectedEpisode = epNum;
-            document.getElementById('main-page').style.display = 'none';
-            document.getElementById('quality-page').style.display = 'block';
-            document.getElementById('ep-title').innerText = `Episode ${epNum} - Select Quality`;
-        }
+        <div class="card"
+             onclick="selectQuality('480p')">
 
-        function showMainPage() {
-            document.getElementById('quality-page').style.display = 'none';
-            document.getElementById('main-page').style.display = 'block';
-        }
+            <div class="quality">
 
-        function sendDataToBot(qualityStr) {
-            const payload = JSON.stringify({
-                episode: selectedEpisode,
-                quality: qualityStr
-            });
+                <div class="quality-icon sd">
+                    SD
+                </div>
 
-            if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.sendData(payload);
-            } else {
-                alert("Please open inside Telegram!");
-            }
-        }
-    </script>
+                <div>
+                    <h3 style="text-align:left;">
+                        480p SD
+                    </h3>
+
+                    <p style="color:#888;">
+                        Watch Ad to Unlock
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+// ============================
+// QUALITY SELECT
+// ============================
+
+function selectQuality(quality) {
+
+    selectedQuality = quality;
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="loading">
+
+            <h2>🎬 Episode ${selectedEpisode}</h2>
+
+            <h3>${selectedQuality}</h3>
+
+            <p style="color:#aaa;">
+                Watch the ad to unlock your file.
+            </p>
+
+            <button class="ad-button"
+                    onclick="watchAd()">
+
+                🎁 Watch Ad & Unlock
+
+            </button>
+
+            <p class="back"
+               onclick="selectEpisode(${selectedEpisode})"
+               style="margin-top:25px;">
+
+                ⬅️ Back
+
+            </p>
+
+        </div>
+    `;
+}
+
+
+// ============================
+// MONETAG REWARDED AD
+// ============================
+
+function watchAd() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="loading">
+
+            <h2>⏳ Loading Ad...</h2>
+
+            <p style="color:#aaa;">
+                Please wait...
+            </p>
+
+        </div>
+    `;
+
+
+    if (typeof show_11645093 !== "function") {
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="loading">
+
+                <h2>⚠️ Ad unavailable</h2>
+
+                <p>
+                    Please try again.
+                </p>
+
+                <button class="ad-button"
+                        onclick="selectQuality('${selectedQuality}')">
+
+                    Try Again
+
+                </button>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    show_11645093()
+
+    .then(() => {
+
+        // Ad successfully completed
+        showFileComing();
+
+    })
+
+    .catch((error) => {
+
+        console.log("Monetag error:", error);
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="loading">
+
+                <h2>❌ Ad not completed</h2>
+
+                <p style="color:#aaa;">
+                    Please watch the ad completely
+                    and try again.
+                </p>
+
+                <button class="ad-button"
+                        onclick="watchAd()">
+
+                    🔄 Try Again
+
+                </button>
+
+            </div>
+        `;
+    });
+}
+
+
+// ============================
+// FILE COMING SCREEN
+// ============================
+
+function showFileComing() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="success">
+
+            <div class="check">
+                ✓
+            </div>
+
+            <h1>
+                File coming!
+            </h1>
+
+            <h3 style="color:#aaa;">
+                Episode ${selectedEpisode}
+                • ${selectedQuality}
+            </h3>
+
+            <p style="color:#888;">
+                The file will arrive in your
+                chat in a moment.
+            </p>
+
+            <button class="collect"
+                    onclick="collectFile()">
+
+                Open Bot to Collect
+
+            </button>
+
+        </div>
+    `;
+}
+
+
+// ============================
+// SEND DATA TO BOT
+// ============================
+
+function collectFile() {
+
+    const payload = {
+
+        action: "collect",
+
+        episode: selectedEpisode,
+
+        quality: selectedQuality,
+
+        timestamp: Date.now()
+
+    };
+
+
+    tg.sendData(
+        JSON.stringify(payload)
+    );
+}
+
+
+// ============================
+// START
+// ============================
+
+showEpisodes();
+
+</script>
 
 </body>
 </html>
