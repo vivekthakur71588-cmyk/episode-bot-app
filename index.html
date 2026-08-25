@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khatron ke Khiladi season 15</title>
+    <title>India's Got Latent</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- Monetag Ad Script Tag -->
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="11645093" async data-cfasync="false"></script>
@@ -34,7 +34,11 @@
             justify-content: space-between;
             cursor: pointer;
         }
-        .card:active { background: #1f1f1f; }
+        .card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .card:active:not(.disabled) { background: #1f1f1f; }
         .left-side {
             display: flex;
             align-items: center;
@@ -136,25 +140,40 @@ tg.expand();
 let selectedEpisode = null;
 let selectedQuality = null;
 
-// Total 8 Episodes ka Data
 const totalEpisodes = 8;
 
 function showEpisodes() {
-    let html = `<div class="header-title">Khatron ke Khiladi season 15</div>`;
+    let html = `<div class="header-title">India's Got Latent</div>`;
     
     for (let i = 1; i <= totalEpisodes; i++) {
-        html += `
-            <div class="card" onclick="selectEpisode(${i})">
-                <div class="left-side">
-                    <div class="num-box">${i}</div>
-                    <div class="ep-info">
-                        <h3>Episode ${i}</h3>
-                        <p>1080p · 720p · 480p</p>
+        if (i <= 2) {
+            // Episode 1 & 2 Active hain
+            html += `
+                <div class="card" onclick="selectEpisode(${i})">
+                    <div class="left-side">
+                        <div class="num-box">${i}</div>
+                        <div class="ep-info">
+                            <h3>Episode ${i}</h3>
+                            <p>1080p · 720p · 480p</p>
+                        </div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+            `;
+        } else {
+            // Episode 3 se 8 tak Coming Soon hain
+            html += `
+                <div class="card disabled">
+                    <div class="left-side">
+                        <div class="num-box" style="background: #333;">${i}</div>
+                        <div class="ep-info">
+                            <h3>Episode ${i}</h3>
+                            <p style="color: #ff4757; font-weight: 500;">Coming Soon</p>
+                        </div>
                     </div>
                 </div>
-                <div class="arrow">›</div>
-            </div>
-        `;
+            `;
+        }
     }
     document.getElementById("app").innerHTML = html;
 }
@@ -164,7 +183,7 @@ function selectEpisode(ep) {
     document.getElementById("app").innerHTML = `
         <div class="back-btn" onclick="showEpisodes()">❮ Episode ${ep}</div>
         <div class="header-title" style="text-align:left; font-size:18px;">Episode ${ep}</div>
-        <p style="color:#888; font-size:13px; margin-top:-10px; margin-bottom:20px;">Khatron ke Khiladi season 15</p>
+        <p style="color:#888; font-size:13px; margin-top:-10px; margin-bottom:20px;">India's Got Latent</p>
         
         <div class="quality-card" onclick="startAd('1080p')">
             <div class="q-text">1080p</div>
@@ -196,7 +215,6 @@ function startAd(quality) {
     `;
 
     if (typeof show_11645093 !== "function") {
-        // Fallback agar ad script turant load na ho toh direct success dikhayein ya try again
         setTimeout(() => {
             showSuccessScreen();
         }, 1000);
@@ -207,7 +225,6 @@ function startAd(quality) {
         showSuccessScreen();
     }).catch((e) => {
         console.log("Ad error or skipped", e);
-        // Fallback taaki user stuck na ho
         showSuccessScreen();
     });
 }
@@ -217,7 +234,7 @@ function showSuccessScreen() {
         <div class="success-screen">
             <div class="success-icon">✓</div>
             <h2 style="margin-bottom:5px;">File coming!</h2>
-            <p style="color:#aaa; font-size:14px; margin-top:0;">Khatron ke Khiladi season 15 · Episode ${selectedEpisode} · ${selectedQuality}</p>
+            <p style="color:#aaa; font-size:14px; margin-top:0;">India's Got Latent · Episode ${selectedEpisode} · ${selectedQuality}</p>
             <p style="color:#666; font-size:13px; margin-top:20px;">The file will arrive in your chat in a moment.</p>
             
             <button class="action-button" onclick="sendDataToBot()">Open Bot to Collect</button>
@@ -233,7 +250,6 @@ function sendDataToBot() {
     tg.sendData(payload);
 }
 
-// Start app
 showEpisodes();
 </script>
 
