@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>India's Got Latent</title>
+    
+    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Monetag Ad Script Tag -->
-    <script src="https://alwingulla.com/88/tag.min.js" data-zone="11645093" async data-cfasync="false"></script>
+
+    <!-- Monetag Real Rewarded Ad SDK Script -->
+    <script src='//libtl.com/sdk.js' data-zone='11645093' data-sdk='show_11645093'></script>
+    
     <style>
         * { box-sizing: border-box; }
         body {
@@ -147,7 +151,6 @@ function showEpisodes() {
     
     for (let i = 1; i <= totalEpisodes; i++) {
         if (i <= 2) {
-            // Episode 1 & 2 Active hain
             html += `
                 <div class="card" onclick="selectEpisode(${i})">
                     <div class="left-side">
@@ -161,7 +164,6 @@ function showEpisodes() {
                 </div>
             `;
         } else {
-            // Episode 3 se 8 tak Coming Soon hain
             html += `
                 <div class="card disabled">
                     <div class="left-side">
